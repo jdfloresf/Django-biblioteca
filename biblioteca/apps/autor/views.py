@@ -14,6 +14,3 @@ class AutorListView(ListView):
     def get_queryset(self):
         kw = self.request.GET.get('autor', '')
         return Autor.objects.buscar_autor4(kw)
-
-
-

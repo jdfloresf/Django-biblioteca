@@ -40,4 +40,4 @@ class Prestamo(models.Model):
 
     def __str__(self):
         """Unicode representation of Prestamo."""
-        return self.lector + '-' + self.libro
+        return self.lector.nombres + '-' + str(self.libro)

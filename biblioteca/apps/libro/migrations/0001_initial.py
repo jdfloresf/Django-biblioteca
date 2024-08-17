@@ -29,7 +29,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('titulo', models.CharField(max_length=50)),
-                ('anio', models.PositiveIntegerField(verbose_name='Año de lanzamiento')),
                 ('portada', models.ImageField(blank=True, null=True, upload_to='portada')),
                 ('visitas', models.PositiveIntegerField()),
                 ('autores', models.ManyToManyField(to='autor.autor')),
