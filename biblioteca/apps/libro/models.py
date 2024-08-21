@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+
+from PIL import Image
 
 # apps
 from apps.autor.models import Autor
@@ -31,6 +34,7 @@ class Libro(models.Model):
     fecha = models.DateField('Fecha de lanzamiento', auto_now=False, auto_now_add=False)
     portada = models.ImageField(upload_to='portada', blank=True, null=True)
     visitas = models.PositiveIntegerField()
+    stok = models.PositiveIntegerField(default=0)
 
     objects = LibroManager()
 
@@ -43,3 +47,13 @@ class Libro(models.Model):
     def __str__(self):
         """Unicode representation of Libro."""
         return str(self.id) + '-' + self.titulo
+
+
+def optimize_image(sender, instance, **kwargs):
+    if instance.portada:
+        portada = Image.open(instance.portada.path)
+        portada.save(instance.portada.path, quality=20, optimize=True)
+
+
+
+post_save.connect(optimize_image, sender=Libro)
