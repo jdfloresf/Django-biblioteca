@@ -1,7 +1,7 @@
 import datetime
 
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Count
 
 class LibroManager(models.Manager):
     """manager para el modelo autor"""
@@ -30,6 +30,12 @@ class LibroManager(models.Manager):
         libro = self.get(id=libro_id)
         libro.autores.add(autor)
         return libro
+    
+    def libros_num_prestamo(self):
+        result = self.aggregate(
+            libros=Count('libro_prestado')
+        )
+        return result
 
     
 
@@ -39,3 +45,9 @@ class CategoriaManager(models.Manager):
         return self.filter(
             categoria_libro__autores__id=autor
         ).distinct()
+    
+    def listar_categora_libros(self):
+        result = self.annotate(
+            libros = Count('categoria_libro')
+        )
+        return result
